@@ -24,8 +24,8 @@ pipeline {
         stage('test') {
             steps {
             sh '''
-                ls -la ./build |grep index.html
                 cd learn-jenkins-app-main
+                ls -la ./build | grep index.html
                 npm test
             '''
             }
