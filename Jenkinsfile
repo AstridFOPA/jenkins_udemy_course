@@ -18,7 +18,7 @@ pipeline {
                     npm ci
                     npm run build
                     ls -la
-                    mkdir combat.txt && echo "You have been hacked!" > combat.txt
+                    touch combat.txt && echo "You have been hacked!" > combat.txt
                 '''
             }
         }
