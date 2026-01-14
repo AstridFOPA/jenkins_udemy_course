@@ -2,6 +2,9 @@ pipeline {
     agent any
 
     stages {
+        /* this is how to add a comment 
+        in Jenkinsfile 
+        */
         stage('Build') {
             agent {
                 docker {
