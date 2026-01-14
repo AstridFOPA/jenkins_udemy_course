@@ -18,8 +18,6 @@ pipeline {
                     npm ci
                     npm run build
                     ls -la
-                    touch combat.txt 
-                    echo "You have been hacked!" >> combat.txt
                 '''
             }
         }
