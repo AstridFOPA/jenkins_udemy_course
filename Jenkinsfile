@@ -12,7 +12,7 @@ pipeline {
             steps {
                 sh '''
                     ls -la
-                    cd learn-jenkins-app-main
+                    cd learning-jenkins-docker
                     node --version
                     npm --version
                     npm ci
@@ -32,15 +32,17 @@ pipeline {
 
             steps {
                 sh '''
-                    cd learn-jenkins-app-main
+                    cd learning-jenkins-docker
                     test -f build/index.html
                     npm test
                 '''
             }
         }
+    }
+
     post {
         always {
-            junit 'learn-jenkins-app-main/test-results/junit.xml'
+            junit 'test-results/junit.xml'
         }
     }
 }
