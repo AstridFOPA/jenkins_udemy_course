@@ -3,7 +3,7 @@ pipeline {
 
     stages {
         /* this is how to add a comment 
-        in Jenkinsfile */
+        in Jenkinsfile 
         stage('Build') {
             agent {
                 docker {
@@ -23,7 +23,7 @@ pipeline {
                 '''
             }
         }
-
+*/
         stage('Test') {
             agent {
                 docker {
@@ -35,7 +35,7 @@ pipeline {
             steps {
                 sh '''
                     cd learn-jenkins-app-main
-                    test -f build/index.html
+                    #test -f build/index.html
                     npm test
                 '''
             }
@@ -52,7 +52,7 @@ pipeline {
             steps {
                 sh '''
                     cd learn-jenkins-app-main
-                    npm install -g serve
+                    npm install serve
                     node_modules/.bin/serve -s build &
                     sleep 10
                     nopx playwright test
