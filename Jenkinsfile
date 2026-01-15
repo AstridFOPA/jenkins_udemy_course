@@ -73,7 +73,7 @@ pipeline {
                 }               
             }
         }
-        stage('Build') {
+        stage('netlify CLI version') {
             agent {
                 docker {
                     image 'node:18-alpine'
