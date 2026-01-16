@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    environment {
+        NETLIFY_SITE_ID = "a876d72c-ab41-4960-ae14-bf1d026105f0"
+    }
 
     stages {
         /* this is how to add a comment 
@@ -85,6 +88,7 @@ pipeline {
                     cd learn-jenkins-app-main
                     npm install netlify-cli
                     node_modules/.bin/netlify --version
+                    echo "deploying to production. Site ID: $NETLIFY_SITE_ID"
                 '''
             }
         }
