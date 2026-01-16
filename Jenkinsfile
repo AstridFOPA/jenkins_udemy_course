@@ -86,6 +86,7 @@ pipeline {
             }
             steps {
                 sh '''
+                    touch bob.txt
                     cd learn-jenkins-app-main
                     npm install netlify-cli
                     node_modules/.bin/netlify --version
