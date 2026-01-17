@@ -3,6 +3,7 @@ pipeline {
     environment {
         NETLIFY_SITE_ID = "a876d72c-ab41-4960-ae14-bf1d026105f0"
         NETLIFY_AUTH_TOKEN = credentials('netlify-token')
+        CI_ENVIRONMENT_URL = "https://incandescent-toffee-235889.netlify.app"
     }
 
     stages {
@@ -72,7 +73,7 @@ pipeline {
                     }
                     post {
                         always {
-                            publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, icon: '', keepAll: false, reportDir: 'learn-jenkins-app-main/playwright-report', reportFiles: 'index.html', reportName: 'playwright HTML Report', reportTitles: '', useWrapperFileDirectly: true])        }
+                            publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, icon: '', keepAll: false, reportDir: 'learn-jenkins-app-main/playwright-report', reportFiles: 'index.html', reportName: 'playwright LOCAL', reportTitles: '', useWrapperFileDirectly: true])        }
                     }
                 }               
             }
@@ -96,5 +97,28 @@ pipeline {
                 '''
             }
         }
+
+        stage('Prod E2E Tests') {
+            agent {
+                docker {
+                    image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
+                    reuseNode true
+                }
+            environment {
+                CI_ENVIRONMENT_URL = "https://incandescent-toffee-235889.netlify.app"
+            }
+
+            steps {
+                sh '''
+                    cd learn-jenkins-app-main
+                    npx playwright test --reporter=line
+
+                '''
+            }
+            post {
+                always {
+                    publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, icon: '', keepAll: false, reportDir: 'learn-jenkins-app-main/playwright-report', reportFiles: 'index.html', reportName: 'playwright E2E Report', reportTitles: '', useWrapperFileDirectly: true])        }
+            }
+        }     
     }
 }
