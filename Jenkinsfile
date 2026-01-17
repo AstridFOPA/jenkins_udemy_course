@@ -77,7 +77,25 @@ pipeline {
                 }               
             }
         }
-        stage('Deploy') {
+        stage('staging Deploy') {
+            agent {
+                docker {
+                    image 'node:18-alpine'
+                    reuseNode true
+                }
+            }
+            steps {
+                sh '''
+                    cd learn-jenkins-app-main
+                    npm install netlify-cli
+                    node_modules/.bin/netlify --version
+                    echo "deploying to production. ASTRID Site ID: $NETLIFY_SITE_ID"
+                    node_modules/.bin/netlify status
+                    node_modules/.bin/netlify deploy --dir=build --no-build
+                '''
+            }
+        }
+        stage('prod Deploy') {
             agent {
                 docker {
                     image 'node:18-alpine'
@@ -111,7 +129,6 @@ pipeline {
                 sh '''
                     cd learn-jenkins-app-main
                     npx playwright test --reporter=line
-
                 '''
             }
             post {
