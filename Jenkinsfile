@@ -96,7 +96,7 @@ pipeline {
                     node_modules/.bin/netlify deploy --dir=build --no-build --json > deploy-output.json
                 '''
                 script {
-                    env.STAGING_URL = sh(script: "node_modules/.bin/node-jq -r \'.deploy__url\' deploy-output.json", returnStdout: true)
+                    env.STAGING_URL = sh(script: "cd learn-jenkins-app-main && node_modules/.bin/node-jq -r \'.deploy_url\' deploy-output.json", returnStdout: true)
                 }
             }
         }
