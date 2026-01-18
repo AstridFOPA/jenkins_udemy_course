@@ -95,6 +95,10 @@ pipeline {
                     node_modules/.bin/netlify deploy --dir=build --no-build --json --no-build > deploy-output.json
                     node_modules/.bin/node-jq -r '.deploy__url' deploy-output.json
                 '''
+                scripts {
+                    env.STAGING_URL = sh (script: "node_modules/.bin/node-jq -r \'.deploy__url\' deploy-output.json" , returnStdout: true)
+                }
+
             }
         }
         stage ( validation ) {
@@ -102,6 +106,28 @@ pipeline {
                 timeout(time: 1, unit: 'MINUTES') {
                    input message: 'Ready to deploy ?', ok: 'Yes, I\'m sure I want to deploy.' 
                 }
+            }
+        }
+        stage('stagging') {
+            agent {
+                docker {
+                    image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
+                    reuseNode true
+                }
+            }
+            environment {
+                CI_ENVIRONMENT_URL = "${env.STAGING_URL}"
+            }
+
+            steps {
+                sh '''
+                    cd learn-jenkins-app-main
+                    npx playwright test --reporter=line
+                '''
+            }
+            post {
+                always {
+                    publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, icon: '', keepAll: false, reportDir: 'learn-jenkins-app-main/playwright-report', reportFiles: 'index.html', reportName: 'prod E2E Report', reportTitles: '', useWrapperFileDirectly: true])        }
             }
         }
         stage('prod Deploy') {
