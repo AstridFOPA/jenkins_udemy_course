@@ -122,14 +122,12 @@ pipeline {
                     publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, icon: '', keepAll: false, reportDir: 'learn-jenkins-app-main/playwright-report', reportFiles: 'index.html', reportName: 'prod E2E Report', reportTitles: '', useWrapperFileDirectly: true])        }
             }
         }
-        /*
         stage ( 'validation') {
             steps {
                 timeout(time: 1, unit: 'MINUTES') {
                    input message: 'Ready to deploy ?', ok: 'Yes, I\'m sure I want to deploy.' 
                 }
             }
-            */
         }
         stage('prod Deploy') {
             agent {
