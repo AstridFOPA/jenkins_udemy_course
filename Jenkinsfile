@@ -96,7 +96,7 @@ pipeline {
                     node_modules/.bin/node-jq -r '.deploy__url' deploy-output.json
                 '''
                 scripts {
-                    env.STAGING_URL = sh (script: "node_modules/.bin/node-jq -r \'.deploy__url\' deploy-output.json" , returnStdout: true)
+                    env.STAGING_URL = sh(script: "node_modules/.bin/node-jq -r \'.deploy__url\' deploy-output.json", returnStdout: true)
                 }
 
             }
