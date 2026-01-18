@@ -93,7 +93,7 @@ pipeline {
                     node_modules/.bin/netlify --version
                     echo "deploying to production. ASTRID Site ID: $NETLIFY_SITE_ID"
                     node_modules/.bin/netlify status
-                    node_modules/.bin/netlify deploy --dir=build --no-build --json --no-build > deploy-output.json
+                    node_modules/.bin/netlify deploy --dir=build --no-build --json > deploy-output.json
                     node_modules/.bin/node-jq -r '.deploy__url' deploy-output.json
                 '''
                 script {
