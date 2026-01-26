@@ -9,13 +9,7 @@ pipeline {
     stages {
         /* this is how to add a comment 
         in Jenkinsfile */
-        stage('Docker'){
-            steps {
-                sh ''' 
-                    docker build -t my-playwright .
-                '''
-            }
-        }
+        
         stage('Build') {
             agent {
                 docker {
