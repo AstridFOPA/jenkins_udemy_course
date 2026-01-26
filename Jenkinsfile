@@ -174,7 +174,7 @@ pipeline {
                     always {
                         junit 'learn-jenkins-app-main/test-results/junit.xml'
                     }
-                }
+        }
     }
 }
 
