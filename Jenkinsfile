@@ -88,15 +88,10 @@ pipeline {
             steps {
                 sh '''
                     cd learn-jenkins-app-main
-                    npm install netlify-cli
-                    npm install node-jq
-                    node_modules/.bin/netlify --version
-                    echo "deploying to staging. Site ID: $NETLIFY_SITE_ID"
-                    node_modules/.bin/netlify status
-                    node_modules/.bin/netlify deploy --dir=build --no-build --json > deploy-output.json
+
                 '''
                 script {
-                    env.STAGING_URL = sh(script: "cd learn-jenkins-app-main && node_modules/.bin/node-jq -r \'.deploy_url\' deploy-output.json", returnStdout: true)
+                    env.STAGING_URL = sh(script: "cd learn-jenkins-app-main && ", returnStdout: true)
                 }
             }
         }
@@ -108,12 +103,19 @@ pipeline {
                 }
             }
             environment {
-                CI_ENVIRONMENT_URL = "${env.STAGING_URL}"
+                CI_ENVIRONMENT_URL= "STAGING_URL_TO_BE SET"
             }
 
             steps {
                 sh '''
                     cd learn-jenkins-app-main
+                    npm install netlify-cli
+                    npm install node-jq
+                    node_modules/.bin/netlify --version
+                    echo "deploying to staging. Site ID: $NETLIFY_SITE_ID"
+                    node_modules/.bin/netlify status
+                    node_modules/.bin/netlify deploy --dir=build --no-build --json > deploy-output.json
+                    CI_ENVIRONMENT_URL=$(node_modules/.bin/node-jq -r \'.deploy_url\' deploy-output.json)
                     npx playwright test --reporter=html
                 '''
             }
@@ -129,7 +131,7 @@ pipeline {
                 }
             }
         }
-        
+
         stage('prod Deploy-E2E TESTS') {
             agent {
                 docker {
