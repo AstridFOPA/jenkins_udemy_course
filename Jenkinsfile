@@ -78,23 +78,6 @@ pipeline {
             }
         }
 
-        stage('deploy staging') {
-            agent {
-                docker {
-                    image 'node:18-alpine'
-                    reuseNode true
-                }
-            }
-            steps {
-                sh '''
-                    cd learn-jenkins-app-main
-
-                '''
-                script {
-                    env.STAGING_URL = sh(script: "cd learn-jenkins-app-main && ", returnStdout: true)
-                }
-            }
-        }
         stage('stagging E2E') {
             agent {
                 docker {
