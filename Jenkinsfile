@@ -129,26 +129,8 @@ pipeline {
                 }
             }
         }
-        stage('prod Deploy') {
-            agent {
-                docker {
-                    image 'node:18-alpine'
-                    reuseNode true
-                }
-            }
-            steps {
-                sh '''
-                    cd learn-jenkins-app-main
-                    npm install netlify-cli
-                    node_modules/.bin/netlify --version
-                    echo "deploying to production. ASTRID Site ID: $NETLIFY_SITE_ID"
-                    node_modules/.bin/netlify status
-                    node_modules/.bin/netlify deploy --dir=build --prod --no-build
-                '''
-            }
-        }
-
-        stage('Prod E2E Tests') {
+        
+        stage('prod Deploy-E2E TESTS') {
             agent {
                 docker {
                     image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
@@ -163,6 +145,11 @@ pipeline {
                 sh '''
                     cd learn-jenkins-app-main
                     npx playwright test --reporter=html
+                    npm install netlify-cli
+                    node_modules/.bin/netlify --version
+                    echo "deploying to production. ASTRID Site ID: $NETLIFY_SITE_ID"
+                    node_modules/.bin/netlify status
+                    node_modules/.bin/netlify deploy --dir=build --prod --no-build
                 '''
             }
             post {
