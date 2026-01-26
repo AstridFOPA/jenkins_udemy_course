@@ -170,10 +170,10 @@ pipeline {
                     publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, icon: '', keepAll: false, reportDir: 'learn-jenkins-app-main/playwright-report', reportFiles: 'index.html', reportName: 'playwright E2E Report', reportTitles: '', useWrapperFileDirectly: true])        }
             }
         }
-            post {
-                    always {
-                        junit 'learn-jenkins-app-main/test-results/junit.xml'
-                    }
+    post {
+            always {
+                junit 'learn-jenkins-app-main/test-results/junit.xml'
+            }
         }
     }
 }
