@@ -55,7 +55,7 @@ pipeline {
                     npm install serve
                     node_modules/.bin/serve -s build &
                     sleep 10
-                    npx playwright test --reporter=line
+                    npx playwright test --reporter=html
 
                 '''
             }
@@ -65,7 +65,6 @@ pipeline {
         always {
             junit 'learn-jenkins-app-main/jest-results/junit.xml'
             publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, icon: '', keepAll: false, reportDir: 'learn-jenkins-app-main/playwright-report', reportFiles: 'index.html', reportName: 'playwright HTML Report', reportTitles: '', useWrapperFileDirectly: true]) 
-        
         }
     }
 }
