@@ -9,7 +9,7 @@ pipeline {
     stages {
         /* this is how to add a comment 
         in Jenkinsfile */
-        
+
         stage('Build') {
             agent {
                 docker {
@@ -97,7 +97,7 @@ pipeline {
                     echo "deploying to staging. Site ID: $NETLIFY_SITE_ID"
                     netlify status
                     netlify deploy --dir=build --no-build --json > deploy-output.json
-                    CI_ENVIRONMENT_URL=$(node-jq -r \'.deploy_url\' deploy-output.json)
+                    CI_ENVIRONMENT_URL=$(jq -r \'.deploy_url\' deploy-output.json)
                     npx playwright test --reporter=html
                 '''
             }
