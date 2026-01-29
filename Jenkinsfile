@@ -8,11 +8,12 @@ pipeline {
     stages {
         /* this is how to add a comment 
         in Jenkinsfile */
+
         stage('deploy to AWS'){
             agent {
                 docker {
                     image 'amazon/aws-cli'
-                    args " --entrypoint ''"
+                    args " -u root --entrypoint ''"
                     reuseNode true
                 }
             }
@@ -20,9 +21,14 @@ pipeline {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'my-aws', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
                 sh '''
-                    aws --version
+                    aws --version   
+                    yum install -y jq
                     echo  "HELLO S3!!" > index.html
-                    aws ecs register-task-definition --cli-input-json file://learn-jenkins-app-main/aws/task-definition-prod.json
+                    LATEST_TD_REVISION=$(aws ecs register-task-definition --cli-input-json file://learn-jenkins-app-main/aws/task-definition-prod.json | jq '.taskDefinition.revision')
+                    echo $LATEST_TD_REVISION
+                    aws ecs update-service --cluster LearnJenkinsApp-Cluster-Prod --service LearnJenkinsApp-TaskDefinition-Prod \
+                    --task-definition LearnJenkinsApp-TaskDefinition-Prod:$LATEST_TD_REVISION
+
                 '''
                 }
 
