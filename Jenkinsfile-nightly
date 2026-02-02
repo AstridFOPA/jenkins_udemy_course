@@ -8,7 +8,7 @@ pipeline {
         stage('Docker'){
             steps {
                 sh 'docker build -f CI/Dockerfile-playwright -t my-playwright .'
-                sh 'docker build -f CI/Dockerfile-aws-cli -t my-aws-cli .'    
+                sh 'docker build -f learn-jenkins-app-main/CI/Dockerfile-aws-cli -t my-aws-cli .'    
             }
         }
     }
