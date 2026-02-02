@@ -1,6 +1,6 @@
 services:
   jenkins-docker:
-    image: docker:dind
+    image: docker:25.0-dind
     container_name: jenkins-docker
     privileged: true
     environment:
