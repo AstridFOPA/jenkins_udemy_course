@@ -4,7 +4,7 @@ pipeline {
         REACT_APP_VERSION = "1.2.$BUILD_ID"
         AWS_DEFAULT_REGION = "us-east-1"
         AWS_ECS_CLUSTER = "LearnJenkinsApp-Cluster-Prod"
-        AWS_AWS_SERVICE = "LearnJenkinsApp-TaskDefinition-Prod"
+        AWS_AWS_SERVICE_PROD = "LearnJenkinsApp-TaskDefinition-Prod"
         AWS_ECS_TD = "LearnJenkinsApp-TaskDefinition"
     }
 
@@ -46,6 +46,7 @@ pipeline {
                 '''
             }
         }
+    }    
 
         stage('deploy to AWS'){
             agent {
@@ -64,11 +65,10 @@ pipeline {
                     echo  "HELLO S3!!" > index.html
                     LATEST_TD_REVISION=$(aws ecs register-task-definition --cli-input-json file://learn-jenkins-app-main/aws/task-definition-prod.json | jq '.taskDefinition.revision')
                     echo $LATEST_TD_REVISION
-                    aws ecs update-service --cluster $AWS_ECS_CLUSTER --service $AWS_AWS_SERVICE --task-definition $AWS_ECS_TD:$LATEST_TD_REVISION
-                    aws ecs wait services-stable --cluster $AWS_ECS_CLUSTER --services $AWS_AWS_SERVICE
+                    aws ecs update-service --cluster $AWS_ECS_CLUSTER --service $AWS_AWS_SERVICE_PROD --task-definition $AWS_ECS_TD:$LATEST_TD_REVISION
+                    aws ecs wait services-stable --cluster $AWS_ECS_CLUSTER --services $AWS_AWS_SERVICE_PROD
                 '''
                 }
-
             }
         }
     }
