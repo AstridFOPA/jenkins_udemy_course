@@ -40,7 +40,8 @@ pipeline {
                 }
             }
             steps {
-                sh ''' 
+                sh '''
+                    cd learn-jenkins-app-main 
                     docker build -t my-jenkinsapp .
                 '''
             }
