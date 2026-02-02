@@ -4,8 +4,8 @@ pipeline {
         REACT_APP_VERSION = "1.2.$BUILD_ID"
         AWS_DEFAULT_REGION = "us-east-1"
         AWS_ECS_CLUSTER = "LearnJenkinsApp-Cluster-Prod"
-        AWS_AWS_SERVICE_PROD = "LearnJenkinsApp-TaskDefinition-Prod"
-        AWS_ECS_TD = "LearnJenkinsApp-TaskDefinition"
+        AWS_AWS_SERVICE_PROD = "LearnJenkinsApp-Service-Prod2"
+        AWS_ECS_TD = "LearnJenkinsApp-TaskDefinition-Prod"
     }
 
     stages {
