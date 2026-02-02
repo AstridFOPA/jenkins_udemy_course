@@ -7,7 +7,7 @@ pipeline {
         it can also be use to define a different name that we have gave to our Dockerfile */
         stage('Docker'){
             steps {
-                sh 'docker build -f CI/Dockerfile -t my-playwright .'
+                sh 'docker build -f CI/Dockerfile-playwright -t my-playwright .'
                 sh 'docker build -f CI/Dockerfile-aws-cli -t my-aws-cli .'    
             }
         }
