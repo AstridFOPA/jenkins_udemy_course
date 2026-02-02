@@ -47,7 +47,6 @@ pipeline {
                 '''
             }
         }
-    }    
 
         stage('deploy to AWS'){
             agent {
