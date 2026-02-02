@@ -2,10 +2,13 @@ pipeline {
     agent any
 
     stages {
+        /* this stage run a Dockerfile inside the CI 
+        the -f after the build command is to specify where the specific Dockerfile is located
+        it can also be use to define a different name that we have gave to our Dockerfile */
         stage('Docker'){
             steps {
                 sh ''' 
-                    docker build -t my-playwright .
+                    docker build -f CI/Dockerfile -t my-playwright .
                 '''
             }
         }
