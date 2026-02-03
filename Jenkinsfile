@@ -33,6 +33,57 @@ pipeline {
             }
         }
 
+        stage ('Run test ') {
+            parallel {
+                stage('Unit Test') {
+                    agent {
+                        docker {
+                            image 'node:18-alpine'
+                            reuseNode true
+                        }
+                    }
+
+                    steps {
+                        sh '''
+                            cd learn-jenkins-app-main
+                            test -f build/index.html
+                            npm test
+                        '''
+                    }
+                    post {
+                        always {
+                            junit 'learn-jenkins-app-main/jest-results/junit.xml'
+                        }
+                    }
+                }
+                     
+
+                stage('E2E Tests') {
+                    agent {
+                        docker {
+                            image 'my-playwright'
+                            reuseNode true
+                        }
+                    }
+
+                    steps {
+                        sh '''
+                            cd learn-jenkins-app-main
+                            npm install serve
+                            node_modules/.bin/serve -s build &
+                            sleep 10
+                            npx playwright test --reporter=line
+
+                        '''
+                    }
+                    post {
+                        always {
+                            publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, icon: '', keepAll: false, reportDir: 'learn-jenkins-app-main/playwright-report', reportFiles: 'index.html', reportName: 'playwright local', reportTitles: '', useWrapperFileDirectly: true])        }
+                    }
+                }               
+            }
+        }
+
         stage('Docker_image build'){
             agent {
                 docker {
