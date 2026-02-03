@@ -83,6 +83,13 @@ pipeline {
                 }               
             }
         }
+        stage ( 'validation') {
+            steps {
+                timeout(time: 1, unit: 'MINUTES') {
+                   input message: 'Ready to deploy ?', ok: 'Yes, I\'m sure I want to deploy.' 
+                }
+            }
+        }
 
         stage('Docker_image build'){
             agent {
